@@ -31,9 +31,9 @@ import edu.iis.mto.integrationtest.utils.ModeUtils;
 @EnableJpaRepositories(basePackages = {"edu.iis.mto.integrationtest.repository"}) //okreœla gdzie szukaæklas definiuj¹cych repozytoria Spring Data.
 public class PersistenceConfig 
 {
-	String SQL_SCHEMA_SCRIPT_PATH = "";
-	String DATA_SCRIPT_FILENAME_SUFFIX = "";
-	String SQL_FOLDER_NAME = "";
+ 	private static final String SQL_SCHEMA_SCRIPT_PATH = "sql/dev-schema-script.sql";
+	private static final String SQL_FOLDER_NAME = "/sql";
+	private static final String DATA_SCRIPT_FILENAME_SUFFIX = "-data-script.sql";
 	
 	@Value("${database.url}")
 	private String databaseUrl;
@@ -43,6 +43,9 @@ public class PersistenceConfig
 	
 	@Value("${database.password}")
 	private String databasePassword;
+	
+	@Value("${database.driver}")
+	private String databaseDriverClass;
 	
 	 private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationMain.class);
 	
@@ -77,7 +80,7 @@ public class PersistenceConfig
 	private Class<? extends Driver> getDriverClass() 
 	{
 		try {
-			Class<?> driverClass = Class.forName("databaseDriverClass");
+			Class<?> driverClass = Class.forName(databaseDriverClass);
 			if (Driver.class.isAssignableFrom(driverClass)) {
 			return (Class<? extends Driver>) driverClass;
 			}else {
